@@ -1,23 +1,27 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import VehicleList from '..';
+import VehicleList from '../index';
 import useData from '../useData';
+import renderWithProviders from '../../../utils/test-utils';
 
-jest.mock('../useData');
+jest.mock('../useData', () => {
+  return {
+    __esModule: true,
+    default: jest.fn(),
+  };
+});
 
 describe('<VehicleList /> Tests', () => {
-  it('Should show loading state if it not falsy', () => {
-    useData.mockReturnValue([true, 'An error occurred', 'results']);
-    const { queryByTestId } = render(<VehicleList />);
-
+  it('Should show loading state if it is not falsy', () => {
+    useData.mockReturnValueOnce([true, 'An error occurred', []]);
+    const { queryByTestId } = renderWithProviders(<VehicleList />);
     expect(queryByTestId('loading')).not.toBeNull();
     expect(queryByTestId('error')).toBeNull();
     expect(queryByTestId('results')).toBeNull();
   });
 
   it('Should show error if it is not falsy and loading is finished', () => {
-    useData.mockReturnValue([false, 'An error occurred', 'results']);
-    const { queryByTestId } = render(<VehicleList />);
+    useData.mockReturnValue([false, 'An error occurred', []]);
+    const { queryByTestId } = renderWithProviders(<VehicleList />);
 
     expect(queryByTestId('loading')).toBeNull();
     expect(queryByTestId('error')).not.toBeNull();
@@ -25,8 +29,36 @@ describe('<VehicleList /> Tests', () => {
   });
 
   it('Should show results if loading successfully finished', () => {
-    useData.mockReturnValue([false, false, 'results']);
-    const { queryByTestId } = render(<VehicleList />);
+    const vehicles = [
+      {
+        id: 'xe',
+        description: 'dummy',
+        price: '£200',
+        modelYear: 'k17',
+        media: [
+          { name: 'vehicle', url: '/images/16x9/xe_k17.jpg' },
+          { name: 'vehicle', url: '/images/1x1/xe_k17.jpg' },
+        ],
+        meta: {
+          bodystyles: ['salon'],
+        },
+      },
+      {
+        id: 'ftype',
+        description: 'dummy2',
+        price: '£300',
+        modelYear: 'k18',
+        media: [
+          { name: 'vehicle', url: '/images/16x9/xe_k17.jpg' },
+          { name: 'vehicle', url: '/images/1x1/xe_k17.jpg' },
+        ],
+        meta: {
+          bodystyles: ['suv'],
+        },
+      },
+    ];
+    useData.mockReturnValue([false, false, vehicles]);
+    const { queryByTestId } = renderWithProviders(<VehicleList />);
 
     expect(queryByTestId('loading')).toBeNull();
     expect(queryByTestId('error')).toBeNull();
