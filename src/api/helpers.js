@@ -4,6 +4,13 @@
  * @param {string} apiUrl
  * @return {Promise<Object>}
  */
+
 export async function request(apiUrl) {
-  return apiUrl;
+  try {
+    const response = await fetch(apiUrl);
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
