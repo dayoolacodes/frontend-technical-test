@@ -4,7 +4,7 @@ export function formatEmissions(emissions) {
         && emissions.template
         && typeof emissions.value === 'number'
   ) {
-    return `Emission: ${emissions.template} ${emissions.value} g/km`;
+    return `${emissions.template.replace('$value', emissions.value)}`;
   }
   return '';
 }
