@@ -1,38 +1,41 @@
 @import "../../sass/main.scss";
 
 .container {
-    display: grid;
-    place-items: center;
-    height: 100vh;
-    $self: &;
+  display: grid;
+  height: 100vh;
+  place-items: center;
+  $self: &;
 
-    & > .spinner {
-        animation: rotate 0.6s linear infinite;
-        border: 3px solid $green;
-        border-top: 3px solid $silver;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+  & > .spinner {
+    animation: rotate .6s linear infinite;
+    border: 3px solid $green;
+    border-radius: 50%;
+    border-top: 3px solid $silver;
+    height: 50px;
+    width: 50px;
+  }
+
+  @keyframes rotate {
+
+    from {
+      transform: rotate(0deg);
     }
 
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
+    to {
+      transform: rotate(360deg);
     }
+  }
 }
 
 .container-inline {
-    display: inline-block;
-    & > .spinner {
-        animation: rotate 0.6s linear infinite;
-        border: 3px solid $green;
-        border-top: 3px solid $silver;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-    }
+  display: inline-block;
+
+  & > .spinner {
+    animation: rotate .6s linear infinite;
+    border: 3px solid $green;
+    border-radius: 50%;
+    border-top: 3px solid $silver;
+    height: 50px;
+    width: 50px;
+  }
 }

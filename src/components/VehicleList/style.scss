@@ -1,13 +1,15 @@
 @import "../../sass/main.scss";
 
 .VehicleList {
-    @include flexmiddle;
+  @include flexmiddle;
+  width: 100%;
+
+  @include lg {
+    flex-wrap: wrap;
+  }
+
+  @include md2 {
+    justify-content: unset;
     width: 100%;
-    @include lg {
-        flex-wrap: wrap;
-    }
-    @include md2 {
-        justify-content: unset;
-        width: 100%;
-    }
+  }
 }
