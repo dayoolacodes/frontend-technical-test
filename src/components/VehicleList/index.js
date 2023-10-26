@@ -1,40 +1,55 @@
 import React from 'react';
-import useData from './useData';
 import './style.scss';
+import { useSelector } from 'react-redux';
+import useData from './useData';
+import VehicleCard from '../VehicleCard';
+import { FullPageSpinner } from '../Loader';
+import ErrorComponent from '../ErrorComponent';
+import Modal from '../Modal';
+import ExtraInfo from '../ExtraInfo';
 
 export default function VehicleList() {
-  // eslint-disable-next-line no-unused-vars
   const [loading, error, vehicles] = useData();
 
+  const isOpen = useSelector((state) => state.modal.isOpen);
+  const vehicleId = useSelector((state) => state.modal.vehicleId);
+
   if (loading) {
-    return <div data-testid="loading">Loading</div>;
+    return <FullPageSpinner />;
   }
 
   if (error) {
-    return <div data-testid="error">{ error }</div>;
+    return <ErrorComponent error={error} />;
   }
+  const extra = vehicles.find((e) => e.id === vehicleId);
 
   return (
-    <div data-testid="results">
-      <p>List of vehicles will be displayed here</p>
-      <p>
-        Visit
-        <a href="/api/vehicles.json" target="_blank"> /api/vehicles.json</a>
-        {' '}
-        (main endpoint)
-      </p>
-      <p>
-        Visit
-        <a href="/api/vehicle_fpace.json" target="_blank">/api/vehicle_fpace.json</a>
-        {' '}
-        (detail endpoint - apiUrl)
-      </p>
-      <p>
-        Visit
-        <a href="/api/vehicle_xf.json" target="_blank">/api/vehicle_xf.json</a>
-        {' '}
-        (vehicle without any price)
-      </p>
+    <div className="VehicleList" data-testid="results">
+      {extra && extra.meta ? (
+        <Modal {...{ isOpen, title: 'More Details' }}>
+          <ExtraInfo {...{ meta: extra.meta }} />
+        </Modal>
+      ) : null}
+      {vehicles.map(
+        ({
+          description, id, media, modelYear, price, meta
+        }, index) => {
+          return (
+            <VehicleCard
+              key={id}
+              {...{
+                description,
+                id,
+                media,
+                modelYear,
+                price,
+                meta,
+                index,
+              }}
+            />
+          );
+        }
+      )}
     </div>
   );
 }
