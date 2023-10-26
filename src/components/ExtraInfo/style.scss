@@ -1,0 +1,22 @@
+@import "../../sass/main.scss";
+
+.vehicle--extra-info {
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    overflow: hidden;
+    p {
+        text-align: left;
+        border: $thin-grey-border;
+        margin: 0;
+        padding: 5px;
+        border-bottom: 0;
+        font-size: $default-font-md;
+        &:last-of-type {
+            border-bottom: $thin-grey-border;
+        }
+    }
+    &.expand {
+        max-height: 500px;
+        transition: max-height 0.5s ease-in;
+    }
+}
